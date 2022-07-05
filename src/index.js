@@ -1,13 +1,17 @@
-import express from "express"
-const PORT = 3000
+import "dotenv/config"
+import api from "./server.js"
+import { connect } from "./db/index.js";
 
-const api = express()
-api.use(express.json()) // liberar requisição com body json
+const PORT = process.env.PORT || 3000;
 
-api.get("/", (req, res) => {
-    res.send("API Wordshop")
-})
+async function init() {
+  // Conexão com o MongoDB Atlas
+  await connect()
+  console.log("Banco de dados conectado com sucesso!")
 
-api.listen(PORT, () => {
-    console.log(`API rodando na porta ${PORT}`)
-})
+  api.listen(PORT, () => {
+    console.log(`API rodando na porta: ${PORT}`);
+  });
+}
+
+init();
